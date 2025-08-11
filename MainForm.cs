@@ -51,7 +51,7 @@ namespace PuzzleGame
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
-            Text = "Game XEPHINH";
+            Text = "Game Xếp Hình";
 
             _timer = new System.Windows.Forms.Timer { Interval = 16 };
             _timer.Tick += (s, e) =>
@@ -120,30 +120,26 @@ namespace PuzzleGame
 
             using (var brushSide = new SolidBrush(Color.FromArgb(25, 25, 25)))
             {
-                g.FillRectangle(brushSide, GameEdgeRight, 0, 150, Height);
-                g.FillRectangle(brushSide, 0, 0, GameEdgeLeft, Height);
+                g.FillRectangle(brushSide, GameEdgeRight, 0, 150, ClientSize.Height);
+                g.FillRectangle(brushSide, 0, 0, GameEdgeLeft, ClientSize.Height);
             }
 
             using (var b = new SolidBrush(colorBackground))
             {
-                g.FillRectangle(b, 450, 80, 150, 70);
-                g.FillRectangle(b, 460, 405, 130, 130);
-                g.FillRectangle(b, 460, 210, 130, 60);
-                g.FillRectangle(b, 460, 280, 130, 60);
-                g.FillRectangle(b, 460, 60, 130, 35);
+                // Clean panels for info and next piece
+                g.FillRectangle(b, 460, 60, 130, 35);   // score banner
+                g.FillRectangle(b, 450, 80, 150, 70);   // score box
+                g.FillRectangle(b, 460, 210, 130, 60);  // level box
+                g.FillRectangle(b, 460, 280, 130, 60);  // lines box
+                g.FillRectangle(b, 460, 405, 130, 130); // next piece box
             }
 
-            using (var pen = new Pen(colorLight, 1))
+            using (var p3 = new Pen(colorLight, 3))
             {
-                g.FillRectangle(new SolidBrush(colorLight), 450, 85, 150, 20);
-                g.FillRectangle(new SolidBrush(colorLight), 450, 110, 150, 4);
-                g.FillRectangle(new SolidBrush(colorLight), 450, 140, 150, 4);
-
-                using var p3 = new Pen(colorLight, 3);
-                g.DrawRoundedRectangle(p3, new Rectangle(465, 65, 120, 25), 5);
-                g.DrawRoundedRectangle(p3, new Rectangle(465, 410, 120, 120), 5);
-                g.DrawRoundedRectangle(p3, new Rectangle(465, 215, 120, 50), 5);
-                g.DrawRoundedRectangle(p3, new Rectangle(465, 285, 120, 50), 5);
+                g.DrawRoundedRectangle(p3, new Rectangle(465, 65, 120, 25), 5);     // banner
+                g.DrawRoundedRectangle(p3, new Rectangle(465, 410, 120, 120), 5);   // next piece
+                g.DrawRoundedRectangle(p3, new Rectangle(465, 215, 120, 50), 5);    // level
+                g.DrawRoundedRectangle(p3, new Rectangle(465, 285, 120, 50), 5);    // lines
             }
 
             using (var f = new Font("Segoe UI", 12, FontStyle.Regular))
@@ -151,26 +147,27 @@ namespace PuzzleGame
             using (var fw = new SolidBrush(Color.White))
             {
                 var sfCenter = new StringFormat { Alignment = StringAlignment.Center };
-                g.DrawString("Score", new Font("Segoe UI", 14, FontStyle.Bold), fb, new RectangleF(450, 70, 150, 30), sfCenter);
-                g.DrawString("Level", new Font("Segoe UI", 14, FontStyle.Bold), fb, new RectangleF(450, 220, 150, 30), sfCenter);
-                g.DrawString("Lines", new Font("Segoe UI", 14, FontStyle.Bold), fb, new RectangleF(450, 290, 150, 30), sfCenter);
+                // Labels
+                g.DrawString("Điểm", new Font("Segoe UI", 12, FontStyle.Bold), fb, new RectangleF(460, 60, 130, 25), sfCenter);
+                g.DrawString("Cấp", new Font("Segoe UI", 12, FontStyle.Bold), fb, new RectangleF(460, 215, 130, 20), sfCenter);
+                g.DrawString("Hàng", new Font("Segoe UI", 12, FontStyle.Bold), fb, new RectangleF(460, 285, 130, 20), sfCenter);
 
-                var sfRight = new StringFormat { Alignment = StringAlignment.Far };
-                g.DrawString(_currentScore.ToString(), f, fb, new RectangleF(450, 120, 150, 30), sfRight);
-                g.DrawString(_currentLevel.ToString(), f, fb, new RectangleF(450, 245, 150, 30), sfRight);
-                g.DrawString(_linesCleared.ToString(), f, fb, new RectangleF(450, 315, 150, 30), sfRight);
+                // Values centered inside boxes
+                g.DrawString(_currentScore.ToString(), new Font("Segoe UI", 20, FontStyle.Bold), fb, new RectangleF(460, 95, 130, 40), sfCenter);
+                g.DrawString(_currentLevel.ToString(), new Font("Segoe UI", 16, FontStyle.Bold), fb, new RectangleF(460, 235, 130, 30), sfCenter);
+                g.DrawString(_linesCleared.ToString(), new Font("Segoe UI", 16, FontStyle.Bold), fb, new RectangleF(460, 305, 130, 30), sfCenter);
 
-                // Controls text
-                g.DrawString("Controls:\n↑\n← ↓ →\n", f, Brushes.White, new RectangleF(0, 120, 150, 60), sfCenter);
-                g.DrawString("Left and Right:\nmove side to side", f, fw, new RectangleF(0, 200, 150, 40), sfCenter);
-                g.DrawString("Up:\nrotate", f, fw, new RectangleF(0, 250, 150, 40), sfCenter);
-                g.DrawString("Down:\nfall faster", f, fw, new RectangleF(0, 300, 150, 40), sfCenter);
-                g.DrawString("R:\nreset game", f, fw, new RectangleF(0, 350, 150, 40), sfCenter);
+                // Controls text (Vietnamese)
+                g.DrawString("Điều khiển:\n↑\n← ↓ →\n", f, Brushes.White, new RectangleF(0, 120, 150, 60), sfCenter);
+                g.DrawString("Trái/Phải:\ndi chuyển", f, fw, new RectangleF(0, 200, 150, 40), sfCenter);
+                g.DrawString("Lên:\nxoay khối", f, fw, new RectangleF(0, 250, 150, 40), sfCenter);
+                g.DrawString("Xuống:\nrơi nhanh", f, fw, new RectangleF(0, 300, 150, 40), sfCenter);
+                g.DrawString("R:\nchơi lại", f, fw, new RectangleF(0, 350, 150, 40), sfCenter);
             }
 
             using (var penDark = new Pen(colorDark, 1))
             {
-                g.DrawLine(penDark, GameEdgeRight, 0, GameEdgeRight, Height);
+                g.DrawLine(penDark, GameEdgeRight, 0, GameEdgeRight, ClientSize.Height);
             }
 
             _fallingPiece.Show(g);
@@ -185,12 +182,12 @@ namespace PuzzleGame
                 using var fgo = new Font("Segoe UI", 36, FontStyle.Bold);
                 using var bgo = new SolidBrush(colorDark);
                 var sfCenter = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
-                g.DrawString("Game Over!", fgo, bgo, new RectangleF(0, 0, Width, Height), sfCenter);
+                g.DrawString("Game Over!", fgo, bgo, new RectangleF(0, 0, ClientSize.Width, ClientSize.Height), sfCenter);
             }
 
             using (var border = new Pen(ColorTranslator.FromHtml("#304550"), 3))
             {
-                g.DrawRectangle(border, new Rectangle(1, 1, Width - 2, Height - 2));
+                g.DrawRectangle(border, new Rectangle(1, 1, ClientSize.Width - 2, ClientSize.Height - 2));
             }
         }
 
@@ -232,7 +229,8 @@ namespace PuzzleGame
 
         private bool CheckLines()
         {
-            for (int y = 0; y < Height; y += GridSpace)
+            int bottom = ClientSize.Height - (ClientSize.Height % GridSpace);
+            for (int y = 0; y < bottom; y += GridSpace)
             {
                 int count = _gridPieces.Count(p => p.Pos.Y == y);
                 if (count == 10)
@@ -263,7 +261,7 @@ namespace PuzzleGame
                 float yyF = piece.Pos.Y + pt.Y * GridSpace + dy;
                 int yy = (int)Math.Round(yyF);
 
-                if (xx < GameEdgeLeft || xx + GridSpace > GameEdgeRight || yy + GridSpace > Height) return true;
+                if (xx < GameEdgeLeft || xx + GridSpace > GameEdgeRight || yy + GridSpace > ClientSize.Height) return true;
 
                 foreach (var gp in _gridPieces)
                 {
@@ -397,7 +395,13 @@ namespace PuzzleGame
             {
                 if (!_form.FutureCollision(this, 0, amount, Rotation))
                 {
-                    AddPos(0, (int)Math.Round(amount));
+                    // Move by exact float amount to avoid losing the lower half near bottom
+                    float newY = Pos.Y + amount;
+                    int dy = (int)Math.Round(newY) - Pos.Y;
+                    if (dy != 0)
+                    {
+                        AddPos(0, dy);
+                    }
                     Fallen = true;
                 }
                 else

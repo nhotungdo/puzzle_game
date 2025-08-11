@@ -102,6 +102,7 @@ function draw() {
     // Draw the lines inner rectangle
     rect(465, 285, 120, 50, 5, 5);
 
+
     // Draw the info labels
     fill(25);
     noStroke();
@@ -486,6 +487,7 @@ class Worker {
         }
     }
 }
+
 
 // Reset the game state
 function resetGame() {
